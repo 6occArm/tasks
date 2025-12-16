@@ -1,28 +1,15 @@
-class Solution {
-public:
-    int lengthOfLongestSubstring(string s) {
-        // Хэш-таблица: символ -> его последняя позиция + 1
-        unordered_map<char, int> charIndex;
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        char_index = {}  # символ -> последняя позиция + 1
+        max_len = 0
+        left = 0
         
-        int maxLen = 0;
-        int left = 0;  // Левая граница окна
+        for right, c in enumerate(s):
+            # Если символ уже в окне — сдвигаем левую границу
+            if c in char_index and char_index[c] > left:
+                left = char_index[c]
+            
+            char_index[c] = right + 1
+            max_len = max(max_len, right - left + 1)
         
-        for (int right = 0; right < s.length(); right++) {
-            char c = s[right];
-            
-            // Если символ уже встречался в текущем окне,
-            // сдвигаем левую границу
-            if (charIndex.count(c) && charIndex[c] > left) {
-                left = charIndex[c];
-            }
-            
-            // Обновляем позицию символа
-            charIndex[c] = right + 1;
-            
-            // Обновляем максимальную длину
-            maxLen = max(maxLen, right - left + 1);
-        }
-        
-        return maxLen;
-    }
-};
+        return max_len
